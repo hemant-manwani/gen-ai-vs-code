@@ -1,0 +1,311 @@
+{
+  "name": "CodeGPT",
+  "displayName": "ChatGPT: write and improve code using AI",
+  "description": "Use ChatGPT for getting your work done faster",
+  "version": "1.0.0",
+  "icon": "resources/extensionIcon.png",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "chatgpt",
+    "openai",
+    "gpt3",
+    "gpt4",
+    "copilot",
+    "ai",
+    "explain",
+    "find bugs",
+    "explain ",
+    "refactor"
+  ],
+  "activationEvents": [
+    "onView:chatgpt.chatView",
+    "onCommand:chatgpt.ask",
+    "onCommand:chatgpt.reviewCode",
+    "onCommand:chatgpt.jsToTs",
+    "onCommand:chatgpt.checkW3cAccessibility",
+    "onCommand:chatgpt.addUnitTests",
+    "onCommand:chatgpt.translate",
+    "onCommand:chatgpt.alternate",
+    "onCommand:chatgpt.documentation"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "chatgpt.ask",
+        "title": "Ask AI"
+      },
+      {
+        "command": "chatgpt.reviewCode",
+        "title": "AI: code review"
+      },
+      {
+        "command": "chatgpt.checkW3cAccessibility",
+        "title": "AI: W3C accessbility check"
+      },
+      {
+        "command": "chatgpt.alternate",
+        "title": "AI: alternate way"
+      },
+      {
+        "command": "chatgpt.addUnitTests",
+        "title": "AI: add unit tests"
+      },
+      {
+        "command": "chatgpt.documentation",
+        "title": "AI: documentation"
+      },
+      {
+        "command": "chatgpt.translate",
+        "title": "AI: translation"
+      },
+      {
+        "command": "chatgpt.jsToTs",
+        "title": "AI: JS to TS"
+      },
+      {
+        "command": "chatgpt.resetConversation",
+        "title": "CodeGPT: Reset chat"
+      },
+      {
+        "command": "chatgpt.tryAgain",
+        "title": "Retry ChatGPT request"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "chatgpt.ask",
+          "when": "editorTextFocus",
+          "group": "chatgpt-menu-group@1"
+        },
+        {
+          "command": "chatgpt.reviewCode",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@4"
+        },
+        {
+          "command": "chatgpt.alternate",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@4"
+        },
+        {
+          "command": "chatgpt.jsToTs",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@4"
+        },
+        {
+          "command": "chatgpt.translate",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@4"
+        },
+        {
+          "command": "chatgpt.checkW3cAccessibility",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@4"
+        },
+        {
+          "command": "chatgpt.documentation",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@6"
+        },
+        {
+          "command": "chatgpt.addUnitTests",
+          "when": "editorHasSelection",
+          "group": "chatgpt-menu-group@6"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "chatgpt.ask"
+        },
+        {
+          "command": "chatgpt.reviewCode",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.checkW3cAccessibility",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.translate",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.addUnitTests",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.alternate",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.jsToTs",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.documentation",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "chatgpt.resetConversation"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "chatgpt",
+          "title": "ChatGPT",
+          "icon": "resources/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "chatgpt": [
+        {
+          "type": "webview",
+          "id": "chatgpt.chatView",
+          "name": "ChatGPT"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "chatGPT",
+      "type": "object",
+      "properties": {
+        "chatgpt.apiKey": {
+          "markdownDescription": "OpenAI API key from [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)",
+          "type": "string",
+          "order": 0
+        },
+        "chatgpt.apiUrl": {
+          "markdownDescription": "OpenAI API URL or other custom API URL. Defaults to [https://api.openai.com/v1](https://api.openai.com/v1)",
+          "type": "string",
+          "default": "https://api.openai.com/v1",
+          "order": 1
+        },
+        "chatgpt.model": {
+          "type": "string",
+          "enum": [
+            "gpt-3.5-turbo",
+            "gpt-4"
+          ],
+          "default": "gpt-3.5-turbo",
+          "description": "Which GPT model to use",
+          "order": 1
+        },
+        "chatgpt.pasteOnClick": {
+          "type": "boolean",
+          "default": true,
+          "description": "Paste the code from a codeblock inside the response into the editor when you click on it",
+          "order": 2
+        },
+        "chatgpt.promptPrefix.reviewCode": {
+          "type": "string",
+          "default": "I will provide you with a piece of code. You will help me identify potential bugs in this code, give important suggestions on improving the code quality and maintainability, and check if it adheres to coding standards and best practices. (Do not change anything else, if there are no problems say so): ",
+          "description": "The prompt prefix used for reviewing the selected code",
+          "order": 5
+        },
+        "chatgpt.promptPrefix.addUnitTests": {
+          "type": "string",
+          "default": "Consider yourself as higly experienced software engineer and Please write unit tests for the following code. (Do not change anything else, if there are no problems say so): ",
+          "description": "The prompt prefix used for adding unit tests for the selected code",
+          "order": 5
+        },
+        "chatgpt.promptPrefix.alternate": {
+          "type": "string",
+          "default": "Consider yourself as highly experienced software engineer, please suggest a way to write the following code in a better way. You may suggest some alternative way as well.",
+          "description": "The prompt prefix used asking AI to suggest alternate ways to write the current logic",
+          "order": 5
+        },
+        "chatgpt.promptPrefix.translate": {
+          "type": "string",
+          "default": "Consider yourself as a language translator. Please translate the values in the following json file to the language specified in 1st line. Consider the json file starting from line 2",
+          "description": "The prompt prefix used for translating the locale files from one language to another",
+          "order": 5
+        },
+        "chatgpt.promptPrefix.checkW3cAccessibility": {
+          "type": "string",
+          "default": "Please check w3c accessbility compliance for the following HMLT/React code. (Do not change anything else, if there are no problems say so): ",
+          "description": "The prompt prefix used checking the w3c accessbility for the html or react code",
+          "order": 5
+        },
+        "chatgpt.promptPrefix.jsToTs": {
+          "type": "string",
+          "default": "Please translate this javascript code to typescript. (Do not change anything else, if there are no problems say so): ",
+          "description": "The prompt prefix used for translating js to ts files",
+          "order": 5
+        },
+        "chatgpt.promptPrefix.documentation": {
+          "type": "string",
+          "default": "Write documentation for the following code: ",
+          "description": "The prompt prefix used for writing documentation for the selected code",
+          "order": 7
+        },
+        "chatgpt.keepConversation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Keep the conversation going by using the same conversation ID for all requests (allows follow-up questions)",
+          "order": 8
+        },
+        "chatgpt.timeoutLength": {
+          "type": "number",
+          "default": "120",
+          "description": "How long should the request wait for a response before timing out (in seconds)",
+          "order": 9
+        },
+        "chatgpt.selectedInsideCodeblock": {
+          "type": "boolean",
+          "default": true,
+          "description": "Append selected code as a codeblock (```...code...```) instead of plain text",
+          "order": 10
+        },
+        "chatgpt.codeblockWithLanguageId": {
+          "type": "boolean",
+          "default": true,
+          "description": "Append language id of the selected code to the codeblock (```language...code...```)",
+          "order": 11
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "update-package-lock": "npm install --package-lock-only"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.73.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.9.3",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0"
+  },
+  "dependencies": {
+    "chatgpt": "^5.2.2",
+    "gpt3-tokenizer": "^1.1.5",
+    "node-fetch": "^3.3.0"
+  }
+}
